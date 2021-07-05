@@ -43,6 +43,7 @@ function getPointGen() {
 
 	let gain = new Decimal(69420)
     if (hasUpgrade("0", 13)) gain = new Decimal(69420 * 2)
+    if (hasUpgrade("0", 32)) gain = gain.times(4)
     if (hasUpgrade("0", 11)) gain = gain.times(upgradeEffect("0", 11))
     return gain
 }
@@ -91,7 +92,8 @@ addLayer("0", {
         unlocked: true,
 		points: new Decimal(0),
     }},
-   
+    autoPrestige(){if (hasUpgrade("0", 33)) return upgradeEffect("0", 33) },
+    resetsNothing(){if (hasUpgrade("0", 33)) return upgradeEffect("0", 33)},
     color: "#4BDC13",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "Borgor", // Name of prestige currency
@@ -163,7 +165,7 @@ addLayer("0", {
             title: "Beta Boost",
             unlocked() {return hasUpgrade(this.layer, 13)},
             description: "Borgor Beta increases borgor gain.",
-            cost: new Decimal(15),
+            cost: new Decimal(150),
             effect() {
                 Ah = player["1.1"].points.pow(0.15)
                 if (player["1.1"].points <1) Ah = Ah + 1
@@ -186,42 +188,39 @@ addLayer("0", {
         },
 
         31: {
-            title: "Alpha Boost",
+            title: "Borgor Union",
             unlocked() {return hasUpgrade(this.layer, 23)},
-            description: "Borgor Alpha increases borgor gain",
-            cost: new Decimal(150),
+            description: "Borgor multiplies alpha, beta, and gamma production",
+            cost: new Decimal(500),
             effect() {
-                let Ah = player["1"].points.pow(0.15)
-                if (player["1"].points <1) Ah = Ah + 1
+                let Ah = player["0"].points.pow(0.2)
+                if (player["0"].points <= 1) Ah = Ah + 1
                 return Ah;
             },
-            effectDisplay() { return format(this.effect())+"x Essence Gain" },
+            effectDisplay() { return format(this.effect())+"x Multi" },
         },
 
         32: {
-            title: "Alpha Boost",
+            title: "Borgor Gate",
             unlocked() {return hasUpgrade(this.layer, 31)},
-            description: "Borgor Alpha increases borgor gain",
-            cost: new Decimal(150),
+            description: "Quadruples base essence gain",
+            cost: new Decimal(2000),
             effect() {
-                let Ah = player["1"].points.pow(0.15)
-                if (player["1"].points <1) Ah = Ah + 1
+                let Ah = 4
                 return Ah;
             },
             effectDisplay() { return format(this.effect())+"x Essence Gain" },
         },
 
         33: {
-            title: "Alpha Boost",
+            title: "The Core",
             unlocked() {return hasUpgrade(this.layer, 32)},
-            description: "Borgor Alpha increases borgor gain",
-            cost: new Decimal(150),
+            description: "Automatically prestige for borgors and essences doesn't resets when you prestige",
+            cost: new Decimal(10000),
             effect() {
-                let Ah = player["1"].points.pow(0.15)
-                if (player["1"].points <1) Ah = Ah + 1
+                let Ah = true
                 return Ah;
             },
-            effectDisplay() { return format(this.effect())+"x Essence Gain" },
         },
 
        
@@ -321,7 +320,7 @@ addLayer("1", {
         22: {
             title: "The Core",
             unlocked() {return hasUpgrade(this.layer, 33)},
-            description: "Doubles base essence generation",
+            description: "Generates borgors based on your essences",
             cost: new Decimal(15),
             effect() {
                 let Ah = 2
