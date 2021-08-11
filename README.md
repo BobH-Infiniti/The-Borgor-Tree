@@ -1,6 +1,6 @@
 # The-Borgor-Tree
 
-A mod of the incremental game The Prestige Tree. Made with The Modding Tree game engine.
+A mod of the incremental game The Prestige Tree. Made with The Modding Tree game engine. It has some pretty basic features, and not-so-unique concept.
 
 ## The-Modding-Tree
 
